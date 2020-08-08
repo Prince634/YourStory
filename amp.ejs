@@ -1,0 +1,96 @@
+<amp-story class="container" id="22" live-story standalone title="Joy of Pets"
+    publisher="AMP tutorials"
+    publisher-logo-src="assets/AMP-Brand-White-Icon.svg"
+    poster-portrait-src="assets/cover.jpg">
+      <%data%>
+        <% Object.values(data.preview).map((page, index)=>{ %>
+
+          <amp-story-page id=<%=page.page_id%> >
+            
+                <% if(page.layoutType=="thirds") { %>
+
+                  <amp-story-grid-layer template="thirds" class="ptag">
+
+                    <div grid-area="upper-third" id="aa">
+                      <%if (page.dataElem && page.dataElem['1a']) {%>
+                        
+                          <% page.dataElem['1a'].forEach(function(key, index) { %>
+
+                            <amp-img layout="fixed" src=<%=key.src %> height="50px" width="50px" id=<%= key.id %>></amp-img>
+
+                          <% }) %>
+                         
+                      <% } %>
+                       </div>
+
+                      <div grid-area="middle-third" id="bb">
+                      <%if (page.dataElem && page.dataElem['1b']) { %>
+                        
+                          <% page.dataElem['1b'].forEach(function(key, index) { %>
+
+                            <amp-img layout="fixed" src=<%=key.src %> height="50px" width="50px" id=<%=key.id %>></amp-img>
+
+                          <% }) %>
+                          
+                      <% } %>
+                      </div>
+
+                      <div grid-area="lower-third" id="cc">
+                      <%if (page.dataElem && page.dataElem['1c']) {%>
+                        
+                          <% page.dataElem['1c'].forEach(function(key, index) { %>
+
+                            <amp-img src=<%=key.src %> height="50px" width="50px" id=<%=key.id %>></amp-img>
+
+                          <% }) %>
+
+                      <% } %>
+                      </div>
+
+                  </amp-story-grid-layer> 
+
+                <% } %>
+
+                <% if(page.layoutType=="fill") { %>
+                    
+                      <% page.dataElem.forEach(function(key, index) { %>
+                        
+
+                          <% if(key.tag=='img'){ %>
+                          
+                            <amp-story-grid-layer template="vertical" class="ptag">
+                               <amp-img layout="fixed" src=<%=key.src %> height="50px" width="50px" id=<%= key.id %>></amp-img>
+                            </amp-story-grid-layer>
+                          
+                          <% } %>
+
+                          <% if(key.tag=='bckImg'){ %>
+                          
+                            <amp-story-grid-layer template="fill" class="ptag">
+                               <amp-img layout="responsive" src=<%=key.value %> height="50px" width="50px" id=<%= key.id %>></amp-img>
+                            </amp-story-grid-layer>
+                          
+                          <% } %>
+
+
+                          <% if(key.tag=='p'){ %>
+                          
+                            <amp-story-grid-layer template="vertical" class="ptag">
+                              <amp-fit-text width="400" id=<%= key.id %> height="40" layout="responsive" max-font-size="24">
+                                <%=key.value %>
+                              </amp-fit-text>
+                               
+                            </amp-story-grid-layer>
+                          
+                          <% } %>
+
+                      <% }) %>
+
+                    
+                <% } %>
+
+          </amp-story-page>
+
+        <% }) %>
+
+    </amp-story>

@@ -1,0 +1,35 @@
+<!doctype html> 
+<html>
+	<title>MyBlog</title>
+	<head>
+		<link href="https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">	
+		<style type="text/css">
+			body, p{
+				margin: 0px;
+				padding: 0px;
+				box-sizing: border-box;
+			}
+
+			body{
+				height:100vh;
+				width: 100vw;
+				background: #EDEEEC;
+			}
+			.coachmark-cls{
+				z-index: 99;
+				background: #FFFFFF;
+			}
+
+		</style>
+	    <% for(var i=0; i<bundles.length; i++) {%>
+	        <script defer src="<%-bundles[i].file%>"></script>
+	    <% } %>
+	    <% for(var i=0; i<split_bundles.length; i++) {%>
+	        <script defer src="<%-split_bundles[i]%>"></script>
+	    <% } %>
+	</head>
+	<body>
+		<div id ="app"><%-htmlContent %></div>
+	</body>
+</html>
