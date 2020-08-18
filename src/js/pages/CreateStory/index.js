@@ -1,73 +1,12 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Header from '@components/Header';
-import { container, mobieContainer, moblileView, mainParent, mobileBtn, flexClass, flexDirectionColumn, borderClass, addText, addDragIcon, alreadyAddedElements, addedElem, bottomBtns } from './style.js'
+import { container, mobieContainer, moblileView, mainParent, mobileBtn, flexClass, flexDirectionColumn, borderClass, alreadyAddedElements, addedElem, bottomBtns } from './style.js'
 import EditBar from './components/EditBar'
 import Button from '@components/Button';
 import { uploadImg } from '@js/helpers.js';
 import Coachmark from '@components/Coachmark';
-
-const DragableElements = ({data, saveData})=>{ 
-	const { id } = data;
-	const [input, setInput] = useState(data.value||'');
-	const mobileCont = document.getElementById('mobileViewDemo');
-	useEffect(()=>{
-		const element = document.getElementById(id);
-		element.style.left='40px';
-		element.style.top='40px';
-
-	},[])
-
-	useEffect(()=>{
-		setInput(data.value);
-	},[data.value])
-
-	const mouseDown = useCallback((event)=>{
-		const element = document.getElementById(id);
-		element.style.zIndex = 1000;
-		document.getElementById('mobileViewDemo').onmouseup = mouseUp;
-		document.getElementById('mobileViewDemo').onmousemove = mouseMove;
-	},[]);
-
-	const moveAt= (pageX, pageY)=> {
-		const element = document.getElementById(id);
-	    element.style.left= pageX-mobileCont.offsetLeft+'px';
-	    element.style.top= pageY-mobileCont.offsetTop+'px';
-	}
-	const mouseUp = ()=>{
-		document.getElementById('mobileViewDemo').onmouseup = null;
-		document.getElementById('mobileViewDemo').onmousemove = null;
-	}
-
-	const mouseMove = (event)=>{
-	    moveAt(event.clientX, event.pageY);
-	}
-
-	const focusOut = ()=>{
-		document.getElementById(id).style.border = '0px';
-	}
-
-	const focusIn = ()=>{
-		document.getElementById(id).style.border = '2px solid black';
-	}
-
-	return(
-		<React.Fragment>
-			{
-				data.tag==="p"?
-				<p contentEditable className={addText} style={{color: data.color||'#000', fontSize: `${data.fontSize?data.fontSize:16}px`, fontWeight: data.fontWeight||500}} id={id} onMouseOver={focusIn} onMouseOut={focusOut} onMouseDown={mouseDown} onChange={()=> saveData(id, e)} onBlur={focusOut} onChange={(e)=>setInput(e.target.value)}>
-				{input}
-				</p>
-				:null
-			}
-			{
-				data.tag==='img'?
-				<img className={addDragIcon} src={data.src} id={id} onMouseOver={focusIn} onMouseOut={focusOut} onMouseDown={mouseDown}/>
-				:null
-			}
-
-		</React.Fragment>
-		)
-}
+import DragableElements from './components/DraggableElements'
+import ElementsDescription from './components/ElementsDescription'
 const CreateStory = ({history})=>{
 
 	const [storyData, setStoryData] = useState({});
@@ -87,15 +26,44 @@ const CreateStory = ({history})=>{
 	},[])
 
 	useEffect(()=>{
+		let showNow = false;
 		let newPage = createUUID('fxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx');
 		setActivePage(newPage);
 		const newFields = {...allFields};
-		newFields[newPage] =  { layoutType: 'fill', page_id: newPage, dataElem:[] }; 
+		let dataElem = [];
+		if(showNow){
+			dataElem = [
+				{
+					color: "rgb(251, 249, 249)",
+					top: 12,
+					left: 70,
+					fontSize: "22px",
+					fontWeight: "800",
+					id: "demo_p_id",
+					isDragable: true,
+					src: "",
+					tag: "p",
+					value: "Happy Birthday"
+				},
+				{
+					id: "demo_img_id",
+					isDragable: false,
+					isIcon: false,
+					src: "http://localhost:4005/gift.jpg",
+					tag: "img",
+					value: "gift.jpg",
+					fixedImg: true
+				}
+			]
+		}
+		newFields[newPage] =  { layoutType: 'fill', page_id: newPage, dataElem }; 
 		addFields(newFields);
 
-		// setTimeout(()=>{
-		// 	setCoachmark(true);
-		// },2000)
+		if(showNow){
+			setTimeout(()=>{
+				setCoachmark(true);
+			},1000)	
+		}
 	},[])
 
 	const getSelectedLayout = useCallback((val)=>{
@@ -140,7 +108,6 @@ const CreateStory = ({history})=>{
 	const addElements = useCallback((data, editField=false)=>{
 		let uid_string = createUUID('fxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx');
 		const newDataElem = {...allFields};
-		
 		if(data.tag ==="p" && editField){
 			//Edit Text field
 			newDataElem[activePage].dataElem = newDataElem[activePage].dataElem.filter(x=>x.id!=data.id);
@@ -153,20 +120,11 @@ const CreateStory = ({history})=>{
 			let img = document.createElement('img');
 			img.src= data.src;
 			img.id = uid_string;
-			if(!data.isIcon){
-				img.style.height = '100%';
-				img.style.width = '100%';
-				img.style.borderRadius = '20px 20px 0px 0px';
-				img.style.pointerEvents = 'none';
-				img.style.zIndex = 100;
-				img.style.position = 'absolute';
-				document.getElementById('mobileViewDemo').appendChild(img);
-			}
 		}
 		addFields(newDataElem);
 	},[allFields, activePage])
 
-	const removeElements = useCallback((id, tag)=>{
+	const removeElements = useCallback((id)=>{
 		const newDataElem = {...allFields};
 		newDataElem[activePage].dataElem = newDataElem[activePage].dataElem.filter(x=>x.id !==id);
 		addFields(newDataElem);
@@ -175,14 +133,11 @@ const CreateStory = ({history})=>{
 			newStoryData['preview'][activePage].dataElem = newStoryData['preview'][activePage].dataElem.filter(x=>x.id!==id);
 		}
 		setStoryData(newStoryData);
-		if(tag){
-			removeChild(document.getElementById(id));
-		}
-	},[allFields, storyData])
+	},[allFields, storyData, activePage])
 
 	const removeChild = useCallback((child)=>{
 		document.getElementById('mobileViewDemo').removeChild(child);
-	})
+	},[])
 
 	const saveData = useCallback((id, data)=>{
 		let newData = {...allFields};
@@ -211,6 +166,7 @@ const CreateStory = ({history})=>{
 				let element = document.getElementById(x.id);
 				if(x.tag=='p'){
 					return{
+						...x,
 						left: ((parseInt(element.style.left)+4)/mobileContainer.clientWidth)*100,
 						top: ((parseInt(element.style.top)+4)/mobileContainer.clientHeight)*100,
 						value: element.innerText,
@@ -248,12 +204,12 @@ const CreateStory = ({history})=>{
 		
 	},[storyData, activePage, allFields])
 
+	const reset = useCallback(()=>{
+		
+	},[activePage, allFields])
+
 	const addNewPage = useCallback(()=>{
-		//savePage();
-		const node = document.getElementById('mobileViewDemo');
-		node.dangerouslySetInnerHTML = {_html: ""};
-		//node.querySelectorAll('*').forEach(n => n.remove());
-		let newPage = createUUID('fxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx');
+		let newPage = createUUID('fxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxnew');
 		const newFields = {...allFields};
 		newFields[newPage] =  { layoutType: 'fill', page_id: newPage, dataElem:[] }; 
 		addFields(newFields) ;
@@ -271,22 +227,17 @@ const CreateStory = ({history})=>{
 	},[])
 
 	const removeHighlight = useCallback((e)=>{
-		console.log('remove highlight', e.currentTarget.dataset.id)
 		if(e.currentTarget.dataset.id){
 			document.getElementById(e.currentTarget.dataset.id).style.border="0px";
 		}
 	},[])
 
 	const showStory = useCallback(()=>{
-		history.push('/amp/story');
+		window.open('http://localhost:4005/amp/story');
 	},[])
 
 	const showPreview = useCallback(()=>{
-		history.push('/amp/story');
-	},[])
-
-	const reset = useCallback(()=>{
-
+		window.open('http://localhost:4005/amp/story');
 	},[])
 
 	console.log(allFields);
@@ -298,8 +249,9 @@ const CreateStory = ({history})=>{
 
 	const handleCloseCoachmark = useCallback(()=>{
 		setCoachmark(false);
-	},[])
-
+		removeElements('demo_img_id');
+		removeElements('demo_p_id')
+	},[removeElements])
 	const coachmarkList = [
 		{
 			target: isClient?document.getElementById('editBar'):'',
@@ -323,6 +275,7 @@ const CreateStory = ({history})=>{
 		}
 	];
 	return(
+		<React.Fragment>
 			<div className={container}>
 				{
 					showCoachmark?
@@ -333,8 +286,14 @@ const CreateStory = ({history})=>{
 				<div className={mobieContainer}>
 					<div className={`${moblileView}`} id="mobileViewDemo">
 						{
-							allFields && allFields[activePage] && allFields[activePage].dataElem.filter(x=>x.isDragable).map((elem, key)=>{
-								return <DragableElements key={key} data={elem} saveData={saveData}/>
+							 allFields && allFields[activePage] && allFields[activePage].dataElem.map((elem, key)=>{
+							 	if(elem.bgColor){
+							 		return <p className="bgColor" style={{backgroundColor: elem.value}}></p>
+							 	}
+							 	if(elem.fixedImg){
+							 		return <img src={elem.src} id={elem.id} className="fixedBackgroundImg"/>
+							 	}
+								return <DragableElements key={key} data={elem} saveData={saveData} showCarousel={showCoachmark}/>
 							})
 						}
 					</div>
@@ -343,18 +302,18 @@ const CreateStory = ({history})=>{
 					</div>
 					<div id="bottomBtns" className={bottomBtns}>
 						<div className="row">
-							<Button styleProps={{padding: 12, margin: 12, color: 'green', fontColor:'#FFF'}} disable={false} clickHandler={showPreview}>
+							<Button styleProps={{padding: 12, margin: 6, color: 'green', fontColor:'#FFF'}} disable={false} clickHandler={showPreview}>
 								Preview
 							</Button>
-							<Button styleProps={{padding: 12, margin: 12, color: 'green', fontColor:'#FFF'}} disable={false} clickHandler={reset}>
+							<Button styleProps={{padding: 12, margin: 6, color: 'green', fontColor:'#FFF'}} disable={false} clickHandler={reset}>
 								RESET
 							</Button>
 						</div>
 						<div className="row">
-							<Button styleProps={{padding: 12, margin: 12, color: 'green', fontColor:'#FFF'}} disable={false} clickHandler={addNewPage}>
+							<Button styleProps={{padding: 12, margin: 6, color: 'green', fontColor:'#FFF'}} disable={false} clickHandler={addNewPage}>
 								Add new Page
 							</Button>
-							<Button styleProps={{padding: 12, margin: 12, color: 'green', fontColor:'#FFF'}} disable={false} clickHandler={savePage}>
+							<Button styleProps={{padding: 12, margin: 6, color: 'green', fontColor:'#FFF'}} disable={false} clickHandler={savePage}>
 								Save Changes
 							</Button>
 						</div>
@@ -376,7 +335,7 @@ const CreateStory = ({history})=>{
 												</Button>
 												:''
 											}
-											<Button styleProps={{padding: 16, margin: 4, color: '#8989ea', fontColor:'#FFF'}} disable={false} clickHandler={()=>removeElements(elem.id, elem.tag && !elem.isDragable)}>
+											<Button styleProps={{padding: 16, margin: 4, color: '#8989ea', fontColor:'#FFF'}} disable={false} clickHandler={()=>removeElements(elem.id)}>
 												Remove
 											</Button>
 										</div>
@@ -384,7 +343,7 @@ const CreateStory = ({history})=>{
 							})
 						}
 						{
-							showCoachmark?
+							showCoachmark && false?
 							<React.Fragment>
 								<div className={addedElem} >
 									<p>Text Field</p>
@@ -416,6 +375,8 @@ const CreateStory = ({history})=>{
 					</div>
 				</div>
 			</div>
+			<ElementsDescription />
+		</React.Fragment>
 		)
 }
 

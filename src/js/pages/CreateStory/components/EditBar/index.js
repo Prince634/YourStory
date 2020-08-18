@@ -6,8 +6,8 @@ import AddImage from '@components/UploadImage'
 
 const CreateStory = ({selectedLayout, setLayout, addFields, editTextField})=>{
 
-	const [itemOpen, setItemToggle] = useState({"2": true});
-	const clickEditITem = useCallback((id)=>{
+	const [itemOpen, setItemToggle] = useState({"2": true, "3": true, "4": true, "5": true});
+	const clickEditItem = useCallback((id)=>{
 		let toggleItem = {...itemOpen};
 		if(toggleItem[id]){
 			delete toggleItem[id]
@@ -25,12 +25,12 @@ const CreateStory = ({selectedLayout, setLayout, addFields, editTextField})=>{
 		console.log(data);
 		addFields(data);
 	},[addFields])
-	console.log(itemOpen);
+
 	return(
 		<React.Fragment>
 			<div className={container} id="editBar">
 				<div className={items}>
-					<div className={editItem}>
+					{/*<div className={editItem}>
 						<div className="textArea" onClick={()=>clickEditITem('1')}>
 							<p>Select Screen Layout</p>
 							<span className={`menu ${itemOpen && itemOpen['1']?'':'active'}`}></span>
@@ -56,10 +56,10 @@ const CreateStory = ({selectedLayout, setLayout, addFields, editTextField})=>{
 							</div>
 							
 						</div>
-					</div>
+					</div>*/}
 
 					<div className={editItem}>
-						<div className="textArea" onClick={()=>clickEditITem('2')}>
+						<div className="textArea" onClick={()=>clickEditItem('2')}>
 							<p>Add Text</p>
 							<span className={`menu ${itemOpen && itemOpen['2']?'':'active'}`}></span>
 						</div>
@@ -68,17 +68,21 @@ const CreateStory = ({selectedLayout, setLayout, addFields, editTextField})=>{
 						</div>
 					</div>
 
-					<div className={editItem} onClick={()=>clickEditITem('3')}>
-						<div className="textArea">
+					<div className={editItem} >
+						<div className="textArea" onClick={()=>clickEditItem('3')}>
 							<p>Select Background Color</p>
 							<span className={`menu ${itemOpen && itemOpen['3']?'':'active'}`}></span>
 						</div>
 						<div className={`${addText} ${itemOpen && itemOpen['3']?transitionClass({height: '80px'}):''}`}>
-							<input type="color" />
+						{
+							itemOpen && itemOpen['3']?	
+							<input type="color" onChange={(e)=>addFields({value:e.target.value, bgColor: true})}/>
+							:''
+						}
 						</div>
 					</div>
 					<div className={editItem}>
-						<div className="textArea" onClick={()=>clickEditITem('4')}>
+						<div className="textArea" onClick={()=>clickEditItem('4')}>
 							<p>Add Icons</p>
 							<span className={`menu ${itemOpen && itemOpen['4']?'':'active'}`}></span>
 						</div>
@@ -87,12 +91,14 @@ const CreateStory = ({selectedLayout, setLayout, addFields, editTextField})=>{
 						</div>
 					</div>
 					<div className={editItem}>
-						<div className="textArea" onClick={()=>clickEditITem('5')}>
+						<div className="textArea" onClick={()=>clickEditItem('5')}>
 							<p>Add Image</p>
 							<span className={`menu ${itemOpen && itemOpen['5']?'':'active'}`}></span>
 						</div>
 						<div className={`${addText} ${itemOpen && itemOpen['5']?transitionClass({height: '80px'}):''}`}>
-							<AddImage addImage={true} addIcons={false} onAdd={getImage} demo="222"/>
+							{
+								itemOpen && itemOpen['5']?<AddImage addImage={true} addIcons={false} onAdd={getImage} demo="222"/>:''
+							}
 						</div>
 					</div>
 				</div>

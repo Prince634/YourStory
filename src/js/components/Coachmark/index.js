@@ -52,7 +52,9 @@ const Coachmark = ({coachmarkList, handleClose})=>{
 			}
 		}
 		setActiveMark(newIndex);
-		setCoachmarkHighlighter(newTarget);
+		if(newTarget){
+			setCoachmarkHighlighter(newTarget);
+		}
 	},[activeMark, handleClose])
 
 	return(
@@ -67,7 +69,7 @@ const Coachmark = ({coachmarkList, handleClose})=>{
 							{
 								activeMark===0?'':<p className="prev" onClick={()=>setNavigate(true)}>Previous</p>
 							}
-							<p className="next" onClick={()=>setNavigate(false)}>Next</p>
+							<p className="next" onClick={()=>setNavigate(false)}>{`${activeMark===coachmarkList.length-1?"Finish":"Next"}`}</p>
 						</div>
 					</div>
 				</div>

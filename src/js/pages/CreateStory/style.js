@@ -4,28 +4,41 @@ import { cursor } from '@styles/index.js'
 export const container = css`{
 	font-family: 'Open Sans', sans-serif;
 	box-sizing: border-box;
-	overflow: hidden;
-	height: calc(100vh - 58px);
+	overflow-x: hidden;
 	display: flex;
+	background: #fff;
+	box-shadow: 0px 0px 2px grey;
+	margin-bottom: 4px;
 }`
 
 export const mobieContainer = css`{
-	width: 68%;
-	margin: 20px 40px;
+	width: 58%;
+	margin: 20px 40px 0px;
 	display: flex;
 	flex-direction: column;
-
 }`
 
 export const moblileView = css`{
 	position: relative;
 	border-radius: 20px 20px 0px 0px;
 	min-width: 360px;
-	height: 90%;
+	height: calc(100vh - 260px);
 	background: #fff;
 	border: 2px solid;
 	&:last-child{
 		border:0px;
+	}
+	.fixedBackgroundImg{
+		height: 100%;
+		width: 100%;
+		border-radius: 20px 20px 0px 0px;
+		pointer-events: none;
+	}
+	.bgColor{
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		border-radius: 20px 20px 0px 0px;
 	}
 }`
 
@@ -67,32 +80,14 @@ export const mainParent = css`{
 	height: 100%;
 }`
 
-export const addText = css`{
-	position: absolute;
-	top: 40px;
-	left: 40px;
-	z-index: 100;
-	border-radius: 8px;
-    border: 2px solid;
-    min-width: 120px;
-    min-height: 30px;
-    padding-right: 8px;
-}`
-
-export const addDragIcon = css`{
-	position: absolute;
-	top: 40px;
-	left: 40px;
-	z-index: 100;
-	height: 100px;
-}`
-
 export const alreadyAddedElements = css`{
 	overflow-y: auto;
 	background:#fff;
+	box-shadow: 0px 0px 5px grey;
 	width: 100%;
 	color: dimgrey;
 	font-size: 20px;
+	height: calc(100vh - 60px);
 	.mainHead{
 		padding: 20px;
 	}

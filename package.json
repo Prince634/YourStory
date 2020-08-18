@@ -5,8 +5,9 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon dist/bundle.js",
-    "build": "webpack --watch"
+    "start": "node dist/bundle.js",
+    "build": "webpack --watch",
+    "prod": "webpack"
   },
   "author": "",
   "license": "ISC",

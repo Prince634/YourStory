@@ -2,7 +2,7 @@ import { css } from 'emotion';
 import { cursor } from '@styles/index.js'
 
 export const container = css`{
-	width: 30%;
+	min-width: 500px;
 	height: calc(100vh - 58px);
 	background-color: #fff;
 	border-right-width: 5px;
@@ -15,9 +15,9 @@ export const items = css`{
 }`
 export const editItem = css`{
 	border-bottom: 2px solid black;
-	&:last-child{
-		border-bottom: 0px;
-	}
+	// &:last-child{
+	// 	border-bottom: 0px;
+	// }
 	padding: 20px;
     color: dimgrey;
     p{

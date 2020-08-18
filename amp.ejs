@@ -59,7 +59,7 @@
                           <% if(key.tag=='img'){ %>
                           
                             <amp-story-grid-layer template="vertical" class="ptag">
-                               <amp-img layout="fixed" src=<%=key.src %> height="50px" width="50px" id=<%= key.id %>></amp-img>
+                               <amp-img layout="fixed" src=<%=key.src %>  id=<%= key.id %>></amp-img>
                             </amp-story-grid-layer>
                           
                           <% } %>
@@ -67,7 +67,7 @@
                           <% if(key.tag=='bckImg'){ %>
                           
                             <amp-story-grid-layer template="fill" class="ptag">
-                               <amp-img layout="responsive" src=<%=key.value %> height="50px" width="50px" id=<%= key.id %>></amp-img>
+                               <amp-img layout="responsive" src=<%=key.value %>  id=<%= key.id %>></amp-img>
                             </amp-story-grid-layer>
                           
                           <% } %>
@@ -76,7 +76,7 @@
                           <% if(key.tag=='p'){ %>
                           
                             <amp-story-grid-layer template="vertical" class="ptag">
-                              <amp-fit-text width="400" id=<%= key.id %> height="40" layout="responsive" max-font-size="24">
+                              <amp-fit-text id=<%= key.id %>  layout="responsive" max-font-size="24">
                                 <%=key.value %>
                               </amp-fit-text>
                                
