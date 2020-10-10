@@ -6,10 +6,10 @@
     "main": [
       0
     ],
-    "@pages/CreateStory": [
+    "@pages/HomePage": [
       1
     ],
-    "@pages/HomePage": [
+    "@pages/CreateStory": [
       2
     ],
     "@pages/ListingPage": [
@@ -21,7 +21,7 @@
       "js": [
         {
           "file": "main.bundle.js",
-          "hash": "5180263ba64afef8063d",
+          "hash": "8c8396dfcdb3764979ee",
           "publicPath": "main.bundle.js"
         }
       ]
@@ -30,7 +30,7 @@
       "js": [
         {
           "file": "1.bundle.js",
-          "hash": "996cfd338e006d792240",
+          "hash": "9268f3a37ebdf2733bab",
           "publicPath": "1.bundle.js"
         }
       ]
@@ -39,7 +39,7 @@
       "js": [
         {
           "file": "2.bundle.js",
-          "hash": "218b81a574e9f815dc1c",
+          "hash": "c88b6a940827139ac9fd",
           "publicPath": "2.bundle.js"
         }
       ]

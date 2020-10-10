@@ -1,9 +1,10 @@
 version: '3'
 services: 
-  web:
-    build:
-      context: .
-    ports: 
-      - "3000:4005"
+  node-server:
+    restart: always
+    build: .
+    ports:
+      - "4005:4005"
     volumes:
-      - .:/app
+        - /app/node_modules
+        - .:/app
