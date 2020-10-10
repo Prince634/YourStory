@@ -1,0 +1,57 @@
+{
+  "entrypoints": [
+    "main"
+  ],
+  "origins": {
+    "main": [
+      0
+    ],
+    "@pages/HomePage": [
+      1
+    ],
+    "@pages/CreateStory": [
+      2
+    ],
+    "@pages/ListingPage": [
+      3
+    ]
+  },
+  "assets": {
+    "0": {
+      "js": [
+        {
+          "file": "bundle.js",
+          "hash": "4f051c911ebfb95a6e89",
+          "publicPath": "bundle.js"
+        }
+      ]
+    },
+    "1": {
+      "js": [
+        {
+          "file": "1.bundle.js",
+          "hash": "e2bc68f108f91c6ed4a5",
+          "publicPath": "1.bundle.js"
+        }
+      ]
+    },
+    "2": {
+      "js": [
+        {
+          "file": "2.bundle.js",
+          "hash": "0ab7474c49c1c985dc5b",
+          "publicPath": "2.bundle.js"
+        }
+      ]
+    },
+    "3": {
+      "js": [
+        {
+          "file": "3.bundle.js",
+          "hash": "e5cf1c591ca2b36876e6",
+          "publicPath": "3.bundle.js"
+        }
+      ]
+    }
+  }
+}
